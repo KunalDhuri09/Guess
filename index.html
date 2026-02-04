@@ -1,26 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Will you be my valentine??</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="banner-gif">
-        <img id="banner" src="mid.gif" alt="banner" />
-      </div>
-      <h1 id="question-heading">Will you be my valentine?</h1>
-      <div class="buttons">
-        <button id="yes-button"><p>Yes</p></button>
-        <button id="no-button"><p>No</p></button>
-      </div>
-      <div class="message">
-        <h1 id="success-message">Yess</h1>
-        <h2 id="success-message">Yepppie, see you sooonnn :3</h2>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine? 💖</title>
+
+  <style>
+    /* ===============================
+       Global
+    ================================ */
+    body {
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ===============================
+       Container
+    ================================ */
+    .container {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 30px 26px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(255, 0, 120, 0.25);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #b4004e;
+      margin-bottom: 10px;
+    }
+
+    /* ===============================
+       Banner
+    ================================ */
+    .banner-gif img {
+      height: 220px;
+      margin-bottom: 10px;
+    }
+
+    /* ===============================
+       Buttons
+    ================================ */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    #yes-button,
+    #no-button {
+      border: none;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #yes-button {
+      background: linear-gradient(135deg, #ff5f9e, #ff2f92);
+      box-shadow: 0 8px 20px rgba(255, 47, 146, 0.5);
+      animation: heartBeat 1.4s infinite;
+    }
+
+    #yes-button:hover {
+      transform: scale(1.1);
+    }
+
+    #no-button {
+      background: linear-gradient(135deg, #ff4e50, #f00000);
+    }
+
+    #no-button:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===============================
+       Success Message
+    ================================ */
+    .message {
+      display: none;
+      margin-top: 20px;
+      color: #b4004e;
+    }
+
+    /* ===============================
+       Modal
+    ================================ */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 105, 135, 0.35);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-box {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      color: #5a0c2d;
+      padding: 26px 30px;
+      border-radius: 20px;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(255, 105, 180, 0.6);
+      animation: pop 0.35s ease-out;
+    }
+
+    .modal-box p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .modal-box button {
+      background: white;
+      color: #ff2f92;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ===============================
+       Animations
+    ================================ */
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.06); }
+      50% { transform: scale(1); }
+    }
+
+    /* ===============================
+       Mobile
+    ================================ */
+    @media (max-width: 480px) {
+      .container {
+        margin: 0 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Modal -->
+  <div id="customModal" class="modal hidden">
+    <div class="modal-box">
+      <p id="modalText"></p>
+      <button id="modalOk">OK 💗</button>
     </div>
-    <script src="script.js"></script>
-  </body>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+    <div class="banner-gif">
+      <img id="banner" src="mid.gif" alt="banner">
+    </div>
+
+    <h1 id="question-heading">Will you be my valentine?</h1>
+
+    <div class="buttons">
+      <button id="yes-button">Yes</button>
+      <button id="no-button">No</button>
+    </div>
+
+    <div class="message">
+      <h1>Yess 💖</h1>
+      <h2>Yepppie, see you sooonnn :3</h2>
+    </div>
+  </div>
+
+  <script>
+    const answers_no = {
+      english: [
+        "No",
+        "Are you sure?",
+        "Are you really sure??",
+        "Are you really realy sure???",
+        "Think again?",
+        "Don't believe in second chances?",
+        "Why are you being so cold?",
+        "Maybe we can talk about it?",
+        "I am not going to ask again!",
+        "Ok now this is hurting my feelings!",
+        "You are now just being mean!",
+        "Why are you doing this to me?",
+        "Please give me a chance!",
+        "I am begging you to stop!",
+        "Ok, Let's just start over.."
+      ]
+    };
+
+    const answers_yes = { english: "Yes 💘" };
+
+    let i = 1;
+    let size = 50;
+    let clicks = 0;
+
+    const noBtn = document.getElementById("no-button");
+    const yesBtn = document.getElementById("yes-button");
+    const banner = document.getElementById("banner");
+
+    const modal = document.getElementById("customModal");
+    const modalText = document.getElementById("modalText");
+    const modalOk = document.getElementById("modalOk");
+
+    function showModal(text) {
+      modalText.textContent = text;
+      modal.classList.remove("hidden");
+    }
+
+    modalOk.onclick = () => modal.classList.add("hidden");
+
+    noBtn.onclick = () => {
+      if (clicks === 0) banner.src = "no.gif";
+      clicks++;
+
+      size += Math.floor(Math.random() * 20);
+      yesBtn.style.height = size + "px";
+      yesBtn.style.width = size + "px";
+
+      if (i < answers_no.english.length - 1) {
+        noBtn.textContent = answers_no.english[i++];
+      } else {
+        showModal(answers_no.english[i]);
+        i = 1;
+        noBtn.textContent = answers_no.english[0];
+        yesBtn.textContent = answers_yes.english;
+        yesBtn.style.height = "50px";
+        yesBtn.style.width = "50px";
+        size = 50;
+      }
+    };
+
+    yesBtn.onclick = () => {
+      banner.src = "yes.gif";
+      document.querySelector(".buttons").style.display = "none";
+      document.querySelector(".message").style.display = "block";
+    };
+  </script>
+
+</body>
 </html>
